@@ -36,6 +36,34 @@ note
 5. 分歧会议只讨论定义和证据；保留原答案，另写裁决标签。
 6. Kappa `<0.60`：停止扩标并重写手册；`0.60～0.70`：二次试标；`≥0.70`：可进入扩标评审。
 
+统计口径：
+
+- 风险等级主一致性指标：三组 pairwise quadratic weighted Cohen's Kappa 的均值；
+- 辅助指标：无权重 Fleiss' Kappa、风险完全一致率；
+- 推荐动作：无权重 Fleiss' Kappa、完全一致率；
+- 不能把无权重 Fleiss' Kappa 写成“加权 Fleiss' Kappa”。
+
+## 命令
+
+```bash
+# 生成三份盲标 CSV 包
+python scripts/create_annotation_pack.py --output results/annotation-pack
+
+# 回收后校验、计算一致性并生成裁决队列
+python scripts/analyze_annotations.py \
+  labels-A.csv labels-B.csv labels-C.csv \
+  --output agreement.json \
+  --adjudication adjudication.csv
+
+# 裁决队列填写完成后形成最终人工标签
+python scripts/finalize_annotations.py \
+  labels-A.csv labels-B.csv labels-C.csv \
+  --adjudication adjudication.csv \
+  --output human-labels.csv
+```
+
+仓库同时提供 `data/annotation_pack/p1-v0.1/` 下三份 `.xlsx`。每份工作簿包含填写说明、冻结上下文、黄色输入区和枚举下拉框，分别交给 A/B/C；不要三人共用一份文件。
+
 ## 禁止事项
 
 - 不得用合成标签作为标注者默认答案。

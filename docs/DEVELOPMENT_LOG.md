@@ -96,3 +96,17 @@
 ### 服务器验收
 
 提交 `e3b9a0688f5582ca033573500b169836a84c5517` 已同步至服务器。30/30 Schema、ruff、14 项 pytest 均通过；基线训练评估耗时 1.20 秒，峰值 RSS 约 155.6 MiB，未使用 Swap。详细记录见 `docs/logs/2026-08-12-p1-smoke.md`。
+
+## 2026-08-12 — P1 人工标注基础设施
+
+### 已执行
+
+1. 建立 A/B/C 三份独立 Excel 盲标工作簿，隐藏设计标签和模型结果。
+2. 工作簿加入填写说明、冻结上下文、黄色输入区、枚举下拉和高风险条件格式。
+3. 实现多表完整性检查、无权重 Fleiss' Kappa、pairwise quadratic weighted Cohen's Kappa、完全一致率和分歧清单。
+4. 实现裁决队列和最终人工标签合并；非一致个案必须填写裁决者、理由与说明。
+5. 新增单元测试覆盖盲标、统计、分歧和裁决闭环。
+
+### 口径修正
+
+此前路线写“Fleiss' Kappa”但风险是有序标签。当前明确：风险的主指标采用三组 pairwise quadratic weighted Cohen's Kappa 均值；无权重 Fleiss' Kappa 作为多标注者辅助指标，避免错误声称实现了加权 Fleiss' Kappa。

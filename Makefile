@@ -1,4 +1,4 @@
-.PHONY: bootstrap check validate pilot baseline test lint
+.PHONY: bootstrap check validate pilot annotation-pack baseline test lint
 
 bootstrap:
 	./scripts/bootstrap.sh
@@ -11,6 +11,9 @@ validate:
 
 pilot:
 	.venv/bin/python scripts/generate_pilot.py
+
+annotation-pack:
+	.venv/bin/python scripts/create_annotation_pack.py --output results/annotation-pack
 
 baseline:
 	.venv/bin/python scripts/run_baselines.py --output results/p1-smoke

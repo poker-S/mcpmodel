@@ -30,6 +30,9 @@ artifacts/
 *.pkl
 *.bundle
 server-*.json
+data/annotation_pack/**/*.inspect.ndjson
+data/annotation_pack/**/preview-*.png
+data/annotation_pack/**/verify-*.png
 
 # Editors / OS
 .idea/
