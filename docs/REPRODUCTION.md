@@ -24,12 +24,29 @@ PIP_INDEX_URL=https://pypi.org/simple PIP_TRUSTED_HOST=pypi.org ./scripts/bootst
 
 ```text
 results/<run_id>/
-  run_manifest.json
-  metrics.csv
-  predictions.csv
-  confidence_intervals.csv
-  figures/
+  reproduction-manifest.json
+  config-snapshot/
+  metrics.json
+  predictions-<role>.csv
+  selective-model.joblib
 ```
+
+## P3 选择性治理冒烟
+
+```bash
+python scripts/run_selective_pipeline.py --output results/p3-selective-smoke
+```
+
+固定数据角色如下：
+
+1. `train` 只拟合有序风险模型；
+2. `probability_calibration` 只拟合温度参数；
+3. `conformal_calibration` 只计算非一致性分数分位数；
+4. `test` 只在所有参数固定后生成冒烟评估，不参与拟合、校准或阈值选择。
+
+所有角色按 `scenario_group` 隔离。输出目录原子发布且禁止覆盖；复现清单保存输入和配置
+SHA-256、Git commit、Python/依赖版本。当前 synthetic Pilot 不具备独立人工真值，且校准
+样本数不足，`metrics.json` 中的 `formal_research_use_allowed` 必须为 `false`。
 
 ## 冻结原则
 

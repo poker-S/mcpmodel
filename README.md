@@ -12,7 +12,8 @@
 - 版本：`0.1.0-dev`
 - 主机基线：Ubuntu 24.04、2 vCPU、4 GiB、4 GiB Swap
 - 已有：工程结构、JSON Schema、基础配置、验证 CLI、示例数据、测试和开发文档
-- 尚未开始：正式标注、模型拟合、概率校准、Conformal、正式实验
+- 已有工程冒烟：有序风险模型、温度校准、split-conformal 风险集合、硬规则优先决策
+- 尚未开始：正式人工真值、可用于论文的模型拟合/校准、正式实验
 
 ## 快速开始
 
@@ -34,6 +35,17 @@ python scripts/run_baselines.py --output results/p1-smoke
 ```
 
 这里的 synthetic 标签只用于工程联调，不是独立人工真值，输出指标不能作为论文结论。
+
+跑通 P3 有序概率、校准、Conformal 与选择性治理流水线：
+
+```bash
+python scripts/run_selective_pipeline.py --output results/p3-selective-smoke
+```
+
+该命令将训练、概率校准、Conformal 校准和测试严格分配给互不重叠的
+`scenario_group`，并输出模型、逐样本概率、风险集合、决策原因、指标、配置快照和
+复现清单。当前 Pilot 校准样本极少，程序会明确设置
+`formal_research_use_allowed=false` 并输出退化告警，结果只能验证工程闭环。
 
 接入本地长亭样例（输出目录受 `.gitignore` 保护）：
 

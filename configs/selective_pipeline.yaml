@@ -1,0 +1,10 @@
+schema_version: "0.1.0"
+status: pipeline_smoke_test_not_independent_evidence
+seed: 20260812
+alpha: 0.20
+# Frozen before the smoke run. Groups, rather than rows, are assigned to roles.
+probability_calibration_groups:
+  - action_scope
+conformal_calibration_groups:
+  - time_window
+  - workspace_delete

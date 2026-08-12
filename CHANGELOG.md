@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-12 - Selective-governance engineering smoke pipeline
+
+- Added cumulative ordinal logistic risk probabilities with monotone projection.
+- Added temperature calibration and split-conformal risk sets with disjoint group roles.
+- Added a hard-rule-first governance engine; statistical predictions alone cannot deny.
+- Added atomic run publication, config snapshots, hashes, environment manifests and readiness warnings.
+
 ## 2026-08-12 - Review workbook automation
 
 - Added a read-only, standard-library XLSX importer for the easy A/B authorization forms.

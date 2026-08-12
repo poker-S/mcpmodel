@@ -1,4 +1,4 @@
-.PHONY: bootstrap check validate pilot annotation-pack ingest baseline test lint audit-external
+.PHONY: bootstrap check validate pilot annotation-pack ingest baseline selective test lint audit-external
 
 bootstrap:
 	./scripts/bootstrap.sh
@@ -23,6 +23,9 @@ ingest:
 
 baseline:
 	.venv/bin/python scripts/run_baselines.py --output results/p1-smoke
+
+selective:
+	.venv/bin/python scripts/run_selective_pipeline.py --output results/p3-selective-smoke
 
 test:
 	.venv/bin/pytest
