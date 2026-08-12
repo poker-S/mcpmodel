@@ -54,6 +54,40 @@ python scripts/create_external_annotation_pack.py \
 
 第二条命令在 A/B 复核表尚未完成时应失败。这是质量门，不是流水线缺陷。
 
+## 易填版 Excel 的自动导入
+
+复核员只填写各自的易填版工作簿，不需要手工导出或改写 CSV。两份表完成后运行：
+
+```bash
+python scripts/import_authorization_workbooks.py \
+  --pack data/derived/chaitin-authz-local-0.3 \
+  --reviewer-a /path/to/MCPModel-授权复核-A-易填版.xlsx \
+  --reviewer-b /path/to/MCPModel-授权复核-B-易填版.xlsx \
+  --output results/chaitin-authz-reviewed-p1
+```
+
+导入器只读取固定单元格值，不执行公式、宏、外部链接或嵌入对象，并进行以下检查：
+
+- A/B 模板身份、复核员代号及两人独立性；
+- 内部 `draft_id`、`scenario_group`、任务哈希和候选数未被修改；
+- 纳入/排除必填项、已知工具和动作词汇；
+- 任务证据必须逐字存在于原始用户任务；
+- 七个证据依据全部填写；
+- 时间与次数为正值；
+- A/B 授权是否完全一致以及是否需要第三人裁决。
+
+导入结果仍位于 Git 忽略目录，包含规范 CSV、工作簿哈希、比较报告和裁决队列。A/B 对“纳入/排除”的意见不一致时也必须裁决，不能再按任意一人的排除意见静默丢弃。
+
+风险盲标包生成后还必须运行：
+
+```bash
+python scripts/audit_external_pack.py \
+  --pack results/chaitin-risk-pack-p1 \
+  --output results/chaitin-risk-pack-p1/quality-audit.json
+```
+
+该检查会阻断未冻结授权、授权占位符、上下文/标签 ID 错位以及 `source_labels`、`unsafe`、`expected_result` 等来源标签泄漏。
+
 ## 当前 P1 资产
 
 - 54 条候选调用，归入 5 个 `scenario_group`；

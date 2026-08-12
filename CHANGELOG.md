@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-12 - Review workbook automation
+
+- Added a read-only, standard-library XLSX importer for the easy A/B authorization forms.
+- Added provenance, vocabulary, completion, reviewer-independence, and disagreement checks.
+- Fixed decision disagreements so they require adjudication instead of silently excluding a group.
+- Added a fail-closed source-label leakage audit for external risk-annotation packs.
+
 ## 2026-08-12 - CI dependency repair
 
 - Installed the model extra in fresh GitHub Actions environments so annotation tests can import NumPy and scikit-learn.

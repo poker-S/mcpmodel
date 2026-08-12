@@ -1,4 +1,4 @@
-.PHONY: bootstrap check validate pilot annotation-pack ingest baseline test lint
+.PHONY: bootstrap check validate pilot annotation-pack ingest baseline test lint audit-external
 
 bootstrap:
 	./scripts/bootstrap.sh
@@ -29,3 +29,6 @@ test:
 
 lint:
 	.venv/bin/ruff check .
+
+audit-external:
+	.venv/bin/python scripts/audit_external_pack.py --pack results/chaitin-risk-pack-p1

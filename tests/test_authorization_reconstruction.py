@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from mcpmodel.authorization_reconstruction import (
+    ADJUDICATION_FIELDS,
     REVIEW_FIELDS,
     create_authorization_reconstruction_pack,
     finalize_authorization_reviews,
@@ -139,3 +140,52 @@ def test_finalize_rejects_reversed_time_window(tmp_path) -> None:
             writer.writerow(row)
     with pytest.raises(ValueError, match="later than valid_from"):
         finalize_authorization_reviews(pack, tmp_path / "authorizations.jsonl", SCHEMAS)
+
+
+def test_decision_disagreement_requires_adjudication(tmp_path) -> None:
+    records = [_record("case_001", 1, "web_fetch", {"url": "https://example.test/status"})]
+    pack = tmp_path / "pack"
+    create_authorization_reconstruction_pack(records, pack, ToolNormalizer(CONFIG))
+    _fill_reviews(pack)
+    review_b = pack / "authorization-review-B.csv"
+    with review_b.open(encoding="utf-8-sig", newline="") as handle:
+        row = next(csv.DictReader(handle))
+    row["decision"] = "exclude"
+    with review_b.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=REVIEW_FIELDS)
+        writer.writeheader()
+        writer.writerow(row)
+    with pytest.raises(ValueError, match="decision disagreement requires completed adjudication"):
+        finalize_authorization_reviews(pack, tmp_path / "authorizations.jsonl", SCHEMAS)
+
+
+def test_adjudicator_can_resolve_decision_disagreement_as_exclude(tmp_path) -> None:
+    records = [_record("case_001", 1, "web_fetch", {"url": "https://example.test/status"})]
+    pack = tmp_path / "pack"
+    create_authorization_reconstruction_pack(records, pack, ToolNormalizer(CONFIG))
+    _fill_reviews(pack)
+    review_b = pack / "authorization-review-B.csv"
+    with review_b.open(encoding="utf-8-sig", newline="") as handle:
+        row = next(csv.DictReader(handle))
+    row["decision"] = "exclude"
+    with review_b.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=REVIEW_FIELDS)
+        writer.writeheader()
+        writer.writerow(row)
+    adjudication = pack / "authorization-adjudication.csv"
+    with adjudication.open(encoding="utf-8-sig", newline="") as handle:
+        decision = next(csv.DictReader(handle))
+    decision.update(
+        {
+            "adjudicator": "reviewer_c",
+            "decision": "exclude",
+            "resolution_reason": "task does not define a reliable authorization boundary",
+        }
+    )
+    with adjudication.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=ADJUDICATION_FIELDS)
+        writer.writeheader()
+        writer.writerow(decision)
+    result = finalize_authorization_reviews(pack, tmp_path / "authorizations.jsonl", SCHEMAS)
+    assert result["excluded_count"] == 1
+    assert result["finalized_count"] == 0

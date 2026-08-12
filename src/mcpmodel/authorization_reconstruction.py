@@ -64,6 +64,7 @@ ADJUDICATION_FIELDS = [
     "sinks_basis",
     "temporal_basis",
     "cardinality_basis",
+    "task_evidence_quote",
     "resolution_reason",
 ]
 
@@ -418,27 +419,49 @@ def finalize_authorization_reviews(
         decisions = [row_a["decision"].strip(), row_b["decision"].strip()]
         if any(decision not in {"include", "exclude"} for decision in decisions):
             raise ValueError(f"{group} has an invalid reviewer decision")
-        if "exclude" in decisions:
+        if decisions == ["exclude", "exclude"]:
             excluded.append(group)
             continue
-        quotes = [row_a["task_evidence_quote"].strip(), row_b["task_evidence_quote"].strip()]
-        if not all(quotes):
-            raise ValueError(f"{group} requires a task-evidence quote from both reviewers")
-        auth_a, auth_b = _review_authorization(row_a), _review_authorization(row_b)
-        resolution = "agreement"
-        adjudicator: str | None = None
-        reason = "independent reviewer fields match exactly"
-        authorization = auth_a
-        if auth_a != auth_b:
-            adjudication = adjudications[group]
-            if adjudication["decision"].strip() != "include":
-                raise ValueError(f"{group} disagreement requires completed adjudication")
+        adjudication = adjudications.get(group)
+        if decisions[0] != decisions[1]:
+            if adjudication is None or adjudication["decision"].strip() not in {
+                "include",
+                "exclude",
+            }:
+                raise ValueError(f"{group} decision disagreement requires completed adjudication")
             adjudicator = adjudication["adjudicator"].strip()
             reason = adjudication["resolution_reason"].strip()
             if not adjudicator or adjudicator in reviewers or not reason:
                 raise ValueError(f"{group} requires an independent adjudicator and reason")
+            if adjudication["decision"].strip() == "exclude":
+                excluded.append(group)
+                continue
+            adjudication_quote = adjudication["task_evidence_quote"].strip()
+            include_row = row_a if row_a["decision"] == "include" else row_b
+            include_quote = include_row["task_evidence_quote"].strip()
+            if not include_quote or not adjudication_quote:
+                raise ValueError(f"{group} requires reviewer and adjudicator task evidence")
             authorization = _review_authorization(adjudication)
+            quotes = [include_quote, adjudication_quote]
             resolution = "adjudicated"
+        else:
+            quotes = [row_a["task_evidence_quote"].strip(), row_b["task_evidence_quote"].strip()]
+            if not all(quotes):
+                raise ValueError(f"{group} requires a task-evidence quote from both reviewers")
+            auth_a, auth_b = _review_authorization(row_a), _review_authorization(row_b)
+            resolution = "agreement"
+            adjudicator = None
+            reason = "independent reviewer fields match exactly"
+            authorization = auth_a
+            if auth_a != auth_b:
+                if adjudication is None or adjudication["decision"].strip() != "include":
+                    raise ValueError(f"{group} disagreement requires completed adjudication")
+                adjudicator = adjudication["adjudicator"].strip()
+                reason = adjudication["resolution_reason"].strip()
+                if not adjudicator or adjudicator in reviewers or not reason:
+                    raise ValueError(f"{group} requires an independent adjudicator and reason")
+                authorization = _review_authorization(adjudication)
+                resolution = "adjudicated"
         authorization_digest = hashlib.sha256(
             (group + json.dumps(authorization, sort_keys=True)).encode()
         ).hexdigest()[:16]
