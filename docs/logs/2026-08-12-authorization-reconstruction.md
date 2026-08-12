@@ -21,7 +21,7 @@
 ## 本地验收
 
 - 5/5 授权草案通过 Schema；
-- 草案 SHA-256：`d8372378e1cc3573e66b187eba7fc024243f27093eb1d1e0b5afd59dd03daafa`；
+- 草案 SHA-256：?? `d8372378e1cc3573e66b187eba7fc024243f27093eb1d1e0b5afd59dd03daafa`???? `bd2c535fb9c6301e450f4feadb43af3ddb4059187e0668ac1e685275326e4a30`??? 5 ??? JSON ???????????????? Windows CRLF ? Linux LF ??；
 - `ruff check .` 通过；
 - `pytest` 23/23 通过；
 - 未完成复核时，授权冻结器会拒绝继续；存在分歧且未裁决时同样拒绝。
