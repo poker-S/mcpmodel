@@ -110,3 +110,7 @@
 ### 口径修正
 
 此前路线写“Fleiss' Kappa”但风险是有序标签。当前明确：风险的主指标采用三组 pairwise quadratic weighted Cohen's Kappa 均值；无权重 Fleiss' Kappa 作为多标注者辅助指标，避免错误声称实现了加权 Fleiss' Kappa。
+
+### 服务器验收
+
+提交 `0c8e016ee178a10859d469e1e77f342e038d9543` 已同步服务器；ruff 通过，pytest 16/16 通过，CLI 盲标包生成成功，三份 `.xlsx` 均存在，服务器工作树 clean。视觉验收覆盖“填写说明”“标注表”“枚举值”三张工作表，公式错误扫描为 0。
