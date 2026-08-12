@@ -28,6 +28,7 @@ artifacts/
 .cache/
 *.joblib
 *.pkl
+*.bundle
 
 # Editors / OS
 .idea/

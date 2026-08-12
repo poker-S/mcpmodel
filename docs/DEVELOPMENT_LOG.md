@@ -35,19 +35,27 @@
 6. 未上传被宿主安全软件标记的 `datasets/ct_a_short/case_05-session.jsonl`。
 7. 确认 GitHub 仓库 `git@github.com:poker-S/mcpmodel.git` 可访问且初始为空。
 8. 建立仓库骨架、开发路线、Schema、配置、示例和测试。
+9. 首次推送 GitHub：`3ec9b143cf4d08d9e9dfd8078eef11f9dd4d9da5`。
+10. 用 Git bundle 将同一提交部署到 `/home/codex/workspace/thesis/mcpmodel`，远端保留原空仓库备份。
+11. 建立 `.venv`，安装开发与建模依赖；项目脚本限制数值计算库最多使用 2 线程。
 
 ### 重要问题与处理
 
 - 本机 Clash Verge TUN 全局模式曾接管 SSH 并导致 banner 交换失败。关闭 TUN 后直连正常；系统代理可保留。
 - 独立 Codex 安装脚本未产生二进制，改用 `npm install -g @openai/codex`。
 - 服务器为抢占式实例，不能作为唯一数据副本；Git 推送和结果回传是强制流程。
+- ECS 到官方 PyPI 的连接超时，切换阿里云 PyPI 镜像后安装恢复；初始化脚本允许通过环境变量覆盖镜像。
 
 ### 验证
 
 - SSH 公钥登录成功；
 - 服务器内存和 Swap 状态正常；
 - 上传包本地/远程 SHA-256 一致；
-- 后续以 `pytest`、Schema 验证和环境检查脚本作为工程验收。
+- `mcpmodel-validate data/examples`：2/2 通过；
+- `ruff check .`：通过；
+- `pytest`：7/7 通过；
+- Python 3.12.3；NumPy 2.5.2；pandas 2.3.3；scikit-learn 1.9.0；
+- 验证后约 2.8 GiB 可用内存、4 GiB 空闲 Swap、66.56 GiB 可用磁盘。
 
 ### 下一步
 

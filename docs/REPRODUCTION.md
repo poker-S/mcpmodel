@@ -12,6 +12,12 @@ mcpmodel-validate data/examples
 pytest
 ```
 
+初始化脚本默认使用阿里云 PyPI 镜像，以适配当前 ECS 的网络路径；也可以显式覆盖：
+
+```bash
+PIP_INDEX_URL=https://pypi.org/simple PIP_TRUSTED_HOST=pypi.org ./scripts/bootstrap.sh
+```
+
 ## 结果目录约定
 
 正式实验写入带时间戳或运行 ID 的目录；必须包含配置快照、Git commit、Python/依赖版本、随机种子、数据哈希、指标和逐样本预测。不得覆盖旧运行。
