@@ -1,0 +1,29 @@
+schema_version: "0.1.0"
+tool_aliases:
+  read_file: filesystem
+  write_file: filesystem
+  delete_file: filesystem
+  shell: shell
+  terminal: shell
+  bash: shell
+  powershell: shell
+  git: git
+  http: http
+  fetch: http
+  api: http
+action_aliases:
+  cat: read
+  get: read
+  remove: delete
+  rm: delete
+  exec: execute
+  run: execute
+  upload_file: upload
+  send: upload
+known_tool_families:
+  - filesystem
+  - shell
+  - git
+  - http
+  - secrets
+  - ci_deployment

@@ -1,0 +1,52 @@
+schema_version: "0.1.0"
+rules:
+  - id: deny_destructive_root
+    priority: 10
+    when: {action: delete, resource_tag: workspace_root, recursive: true}
+    effect: {risk_floor: L4, decision: deny}
+    reason_code: DESTRUCTIVE_WORKSPACE_ROOT
+  - id: deny_obfuscated_execution
+    priority: 20
+    when: {execution_capability_min: 0.8, obfuscation_min: 0.8}
+    effect: {risk_floor: L4, decision: deny}
+    reason_code: OBFUSCATED_HIGH_CAPABILITY_EXECUTION
+  - id: deny_secret_external_exfiltration
+    priority: 30
+    when: {resource_tag: secret, sink_external: true}
+    effect: {risk_floor: L4, decision: deny}
+    reason_code: SECRET_TO_EXTERNAL_SINK
+  - id: approve_protected_branch
+    priority: 40
+    when: {tool_family: git, action: push, resource_tag: protected_branch}
+    effect: {risk_floor: L3, decision: approve}
+    reason_code: PROTECTED_BRANCH_WRITE
+  - id: rewrite_sensitive_log_upload
+    priority: 50
+    when: {resource_tag: sensitive_log, sink_external: true, redaction_available: true}
+    effect: {risk_floor: L3, decision: rewrite}
+    reason_code: REDACT_BEFORE_EXTERNAL_UPLOAD
+  - id: isolate_untrusted_shell
+    priority: 60
+    when: {tool_family: shell, source_untrust_min: 0.7}
+    effect: {risk_floor: L3, decision: isolate}
+    reason_code: UNTRUSTED_SOURCE_TO_SHELL
+  - id: approve_unknown_tool
+    priority: 70
+    when: {normalization_status: unknown}
+    effect: {risk_floor: L2, decision: approve}
+    reason_code: UNKNOWN_TOOL_OR_ACTION
+  - id: approve_missing_authorization
+    priority: 80
+    when: {authorization_missing: true, side_effect_min: 0.3}
+    effect: {risk_floor: L2, decision: approve}
+    reason_code: MISSING_AUTHORIZATION_FOR_SIDE_EFFECT
+  - id: rewrite_scopeable_bulk_write
+    priority: 90
+    when: {action: write, blast_radius_min: 0.7, scope_rewrite_available: true}
+    effect: {risk_floor: L3, decision: rewrite}
+    reason_code: REDUCE_BULK_WRITE_SCOPE
+  - id: approve_repeated_beyond_limit
+    priority: 100
+    when: {temporal_gap_min: 0.8}
+    effect: {risk_floor: L3, decision: approve}
+    reason_code: AUTHORIZED_CALL_LIMIT_EXCEEDED

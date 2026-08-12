@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpmodel.local/schemas/case.schema.json",
+  "title": "MCPModel candidate call case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "scenario_group", "user_task", "authorization", "provenance", "call"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{2,63}$"},
+    "scenario_group": {"type": "string", "minLength": 3},
+    "user_task": {"type": "string", "minLength": 1},
+    "authorization": {"$ref": "authorization.schema.json"},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_type", "source_untrust", "taint_confidence"],
+      "properties": {
+        "source_type": {"enum": ["user", "local_file", "external_content", "tool_output", "mixed"]},
+        "source_untrust": {"type": "number", "minimum": 0, "maximum": 1},
+        "taint_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "upstream_event_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "call": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "action", "resource", "sink", "arguments"],
+      "properties": {
+        "tool": {"type": "string", "minLength": 1},
+        "action": {"type": "string", "minLength": 1},
+        "resource": {"type": "string", "minLength": 1},
+        "sink": {"type": ["string", "null"]},
+        "arguments": {"type": "object"},
+        "call_index": {"type": "integer", "minimum": 1},
+        "timestamp": {"type": "string", "format": "date-time"}
+      }
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inherent_risk", "recommended_action"],
+      "properties": {
+        "inherent_risk": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+        "recommended_action": {"enum": ["allow", "isolate", "rewrite", "approve", "deny"]},
+        "reason_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "adjudication_note": {"type": "string"}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "origin": {"enum": ["synthetic", "public_sanitized", "internal_synthetic"]},
+        "template_id": {"type": ["string", "null"]},
+        "dataset_version": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

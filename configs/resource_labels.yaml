@@ -1,0 +1,31 @@
+schema_version: "0.1.0"
+defaults:
+  confidentiality: 0.3
+  integrity: 0.3
+  availability: 0.3
+patterns:
+  - pattern: "**/README*"
+    tag: public_document
+    confidentiality: 0.0
+    integrity: 0.2
+    availability: 0.1
+  - pattern: "**/.env*"
+    tag: secret
+    confidentiality: 1.0
+    integrity: 0.8
+    availability: 0.3
+  - pattern: "**/.ssh/**"
+    tag: secret
+    confidentiality: 1.0
+    integrity: 1.0
+    availability: 0.5
+  - pattern: "git:refs/heads/main"
+    tag: protected_branch
+    confidentiality: 0.2
+    integrity: 1.0
+    availability: 0.8
+  - pattern: "workspace:/"
+    tag: workspace_root
+    confidentiality: 0.7
+    integrity: 1.0
+    availability: 1.0

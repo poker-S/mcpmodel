@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpmodel.local/schemas/authorization.schema.json",
+  "title": "MCPModel authorization envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["subject", "tools", "actions", "resources", "sinks", "valid_from", "valid_until", "max_calls"],
+  "properties": {
+    "subject": {"type": "string", "minLength": 1},
+    "tools": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "actions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "resources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "sinks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "valid_from": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "max_calls": {"type": "integer", "minimum": 1},
+    "approval_id": {"type": ["string", "null"]},
+    "notes": {"type": "string"}
+  }
+}

@@ -1,0 +1,37 @@
+schema_version: "0.1.0"
+risk_levels:
+  L0:
+    ordinal: 0
+    name: negligible
+    description: No material side effect; public or non-sensitive read only.
+  L1:
+    ordinal: 1
+    name: low
+    description: Local, authorized and readily reversible effect.
+  L2:
+    ordinal: 2
+    name: moderate
+    description: Material effect or incomplete context requiring additional control.
+  L3:
+    ordinal: 3
+    name: high
+    description: Sensitive data, high privilege, protected resource or broad side effect.
+  L4:
+    ordinal: 4
+    name: critical
+    description: Catastrophic destruction, mass exfiltration or explicit attack chain.
+
+decision_actions:
+  - allow
+  - isolate
+  - rewrite
+  - approve
+  - deny
+
+authorization_gap_dimensions:
+  - tool_scope
+  - action_scope
+  - resource_scope
+  - sink_scope
+  - temporal_scope
+  - subject_scope

@@ -1,0 +1,36 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.env
+.env.*
+!.env.example
+
+# Data: manifests/examples may be versioned, raw and adjudicated data require review.
+data/raw/*
+!data/raw/.gitkeep
+data/pilot/private/
+data/annotated/*
+!data/annotated/.gitkeep
+data/splits/generated/
+data/external_test/raw/
+
+# Reproducible outputs and local caches
+results/*
+!results/.gitkeep
+artifacts/
+.cache/
+*.joblib
+*.pkl
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
