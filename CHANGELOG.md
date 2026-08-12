@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-12 - CI dependency repair
+
+- Installed the model extra in fresh GitHub Actions environments so annotation tests can import NumPy and scikit-learn.
+- Updated official checkout/setup-python actions to their Node.js 24-compatible major versions.
+
 ## 2026-08-12 - Authorization reconstruction gate
 
 - Added task-only, two-reviewer authorization reconstruction with adjudication.

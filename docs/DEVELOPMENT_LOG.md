@@ -148,3 +148,7 @@
 ## 2026-08-12 — 授权重建质量门
 
 已为 54 条长亭候选调用增加风险标注前的任务盲法授权重建：5 个场景组、双人独立复核、第三人裁决、任务哈希锁定和来源标签隔离。54 条调用全部规范化为已知工具/动作；未完成授权冻结时，外部风险标注包生成器拒绝继续。详细记录见 `docs/logs/2026-08-12-authorization-reconstruction.md`，方法决策见 ADR-0005。
+
+## 2026-08-12 — GitHub Actions 修复
+
+GitHub 内容更新实际成功，但从提交 `0c8e016` 开始的 CI 连续失败。失败与功能代码无关：干净 runner 只安装了 `.[dev]`，而新增标注一致性测试需要位于 `model` extra 的 NumPy 和 scikit-learn，导致 pytest 收集阶段退出码 2。本地和服务器已有完整依赖，因此此前未复现。CI 与 README 已统一改为安装 `.[dev,model]`，同时将官方 checkout/setup-python action 更新到 Node.js 24 兼容版本。
