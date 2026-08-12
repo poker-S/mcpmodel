@@ -13,7 +13,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Validate MCPModel JSON/JSONL artifacts")
     parser.add_argument("paths", nargs="+", type=Path)
     parser.add_argument(
-        "--schema", choices=("case", "authorization", "audit_event"), default="case"
+        "--schema",
+        choices=("case", "authorization", "audit_event", "source_record", "derived_record"),
+        default="case",
     )
     return parser
 

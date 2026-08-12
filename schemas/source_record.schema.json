@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpmodel.local/schemas/source_record.schema.json",
+  "title": "MCPModel source provenance record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "publisher", "dataset_name", "source_kind", "local_root", "license_status", "allowed_use", "ingested_at", "converter_version"],
+  "properties": {
+    "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{2,63}$"},
+    "publisher": {"type": "string", "minLength": 1},
+    "dataset_name": {"type": "string", "minLength": 1},
+    "source_kind": {"enum": ["agent_trajectory", "prompt_classification", "vulnerability_corpus", "vulnerability_verification", "deployment_evaluation"]},
+    "local_root": {"type": "string", "minLength": 1},
+    "archive_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "license_status": {"enum": ["research_internal_only", "license_file_present", "unknown_needs_review"]},
+    "license_note": {"type": "string"},
+    "allowed_use": {"enum": ["train_after_human_label", "auxiliary_only", "external_evaluation_only", "scenario_seed_only"]},
+    "ingested_at": {"type": "string", "format": "date-time"},
+    "converter_version": {"type": "string", "minLength": 1}
+  }
+}

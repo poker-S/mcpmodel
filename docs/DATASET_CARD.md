@@ -15,6 +15,24 @@
 - 经隔离、脱敏和结构化转换的公开安全样例；
 - 独立外部测试集。
 
+## 长亭科技样例接入
+
+| 数据源 | 当前样例量 | 用法 | 是否直接作为 L0～L4 真值 |
+|---|---:|---|---|
+| Agent attack trajectory | 49 个工具调用 + 5 份攻击分析 | 真实候选调用，补全授权后盲标 | 否 |
+| Network attack prompt | 40 条 | 来源风险/攻击活动辅助语料 | 否 |
+| AI-VULNATLAS | 7 个 finding | 外部评测与攻击链案例 | 否 |
+| CVE verification | 8 个 finding | 场景种子、严重性和验证证据 | 否 |
+| Deployment evaluation | 5 个通过的检查 | 正常高权限调用候选 | 否 |
+
+统一转换后共 114 条派生记录，其中 54 条候选工具调用、40 条辅助提示词、7 条外部评测记录、13 条场景种子。派生记录由 `schemas/derived_record.schema.json` 约束，来源登记由 `schemas/source_record.schema.json` 约束。
+
+每条派生记录保留：`source_id`、原始相对路径、原文件 SHA-256、JSON/JSONL 定位器、场景组、转换器版本、允许用途和标签状态。多文件证据还保留 supporting source 路径与 SHA-256。
+
+## 许可边界
+
+样例 README 表述为 research/internal use，并要求许可细节联系维护者。当前采用 `research_internal_only`：原始包和逐条派生语料不进入 GitHub；仓库只提交来源配置、Schema、转换器、聚合统计和不可逆哈希。若公开发布论文附件、数据集或派生语料，必须先另行确认再分发许可。
+
 ## 不适用
 
 - 通用用户恶意性判定；

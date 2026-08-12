@@ -35,6 +35,17 @@ python scripts/run_baselines.py --output results/p1-smoke
 
 这里的 synthetic 标签只用于工程联调，不是独立人工真值，输出指标不能作为论文结论。
 
+接入本地长亭样例（输出目录受 `.gitignore` 保护）：
+
+```bash
+python scripts/ingest_chaitin.py \
+  --extracted-root /path/to/chaitin_extracted \
+  --raw-root /path/to/chaitin_raw \
+  --output data/derived/chaitin-0.1
+```
+
+来源和许可边界见 `docs/SOURCE_REGISTER.md`。
+
 低配置服务器建议限制线程：
 
 ```bash

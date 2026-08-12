@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+publisher: "Chaitin Technology"
+license_policy: >-
+  Sample READMEs state research/internal use and instruct users to contact maintainers
+  for licensing details. Derived structured records may be used inside this research;
+  redistribution and public release require a separate license review.
+sources:
+  - source_id: chaitin_agent_trajectory_sample
+    dataset_name: agent-attack-trajectory-sample
+    source_kind: agent_trajectory
+    relative_root: agent-attack-trajectory-sample/agent-attack-trajectory-sample
+    archive_name: agent-attack-trajectory-sample.zip
+    license_status: research_internal_only
+    allowed_use: train_after_human_label
+  - source_id: chaitin_network_prompt_sample
+    dataset_name: network-attack-prompt-sample
+    source_kind: prompt_classification
+    relative_root: network-attack-prompt-sample/network-attack-prompt-sample
+    archive_name: network-attack-prompt-sample.zip
+    license_status: research_internal_only
+    allowed_use: auxiliary_only
+  - source_id: chaitin_ai_vuln_atlas_sample
+    dataset_name: AI-VULNATLAS Sample Dataset
+    source_kind: vulnerability_corpus
+    relative_root: ai-vuln-atlas-sample/ai-vuln-atlas-sample-main
+    archive_name: ai-vuln-atlas-sample.zip
+    license_status: research_internal_only
+    allowed_use: external_evaluation_only
+  - source_id: chaitin_cve_verification_sample
+    dataset_name: CVE Vulnerability Verification Dataset Samples
+    source_kind: vulnerability_verification
+    relative_root: data-sample/data-sample
+    archive_name: data-sample.zip
+    license_status: research_internal_only
+    allowed_use: scenario_seed_only
+  - source_id: chaitin_deployment_sample
+    dataset_name: Project Deployment Evaluation Dataset Sample
+    source_kind: deployment_evaluation
+    relative_root: project-deployment-sample/project-deployment-sample-main
+    archive_name: project-deployment-sample.zip
+    license_status: research_internal_only
+    allowed_use: train_after_human_label

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpmodel.local/schemas/derived_record.schema.json",
+  "title": "MCPModel derived multi-source record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "source_id", "source_kind", "source_file", "source_file_sha256", "source_locator", "scenario_group", "usage_role", "label_status", "payload", "converter_version"],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{2,127}$"},
+    "source_id": {"type": "string", "minLength": 3},
+    "source_kind": {"type": "string", "minLength": 3},
+    "source_file": {"type": "string", "minLength": 1},
+    "source_file_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_locator": {"type": "string", "minLength": 1},
+    "scenario_group": {"type": "string", "minLength": 3},
+    "usage_role": {"enum": ["candidate_tool_call", "auxiliary_prompt", "scenario_seed", "external_evaluation"]},
+    "label_status": {"enum": ["source_label_auxiliary", "requires_human_label", "source_evidence_only"]},
+    "source_labels": {"type": "object", "additionalProperties": true},
+    "payload": {"type": "object", "additionalProperties": true},
+    "converter_version": {"type": "string", "minLength": 1}
+  }
+}

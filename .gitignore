@@ -20,6 +20,8 @@ data/annotated/*
 !data/annotated/.gitkeep
 data/splits/generated/
 data/external_test/raw/
+data/derived/*
+!data/derived/.gitkeep
 
 # Reproducible outputs and local caches
 results/*
