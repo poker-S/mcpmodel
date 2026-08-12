@@ -5,8 +5,7 @@ import argparse
 import json
 from pathlib import Path
 
-from mcpmodel.authorization_reconstruction import load_reconstructed_authorizations
-from mcpmodel.external_annotation import create_external_annotation_pack
+from mcpmodel.authorization_reconstruction import create_authorization_reconstruction_pack
 from mcpmodel.normalizer import ToolNormalizer
 from mcpmodel.validator import iter_documents
 
@@ -15,7 +14,6 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--derived", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--authorizations", type=Path)
     parser.add_argument(
         "--normalization-config",
         type=Path,
@@ -27,24 +25,10 @@ def main() -> int:
         if path.name == "sources.jsonl":
             continue
         records.extend(document for _, document in iter_documents(path))
-    print(
-        json.dumps(
-            create_external_annotation_pack(
-                records,
-                args.output,
-                reconstructed_authorizations=(
-                    load_reconstructed_authorizations(args.authorizations)
-                    if args.authorizations
-                    else None
-                ),
-                normalizer=(
-                    ToolNormalizer(args.normalization_config) if args.authorizations else None
-                ),
-            ),
-            ensure_ascii=False,
-            indent=2,
-        )
+    manifest = create_authorization_reconstruction_pack(
+        records, args.output, ToolNormalizer(args.normalization_config)
     )
+    print(json.dumps(manifest, ensure_ascii=False, indent=2))
     return 0
 
 

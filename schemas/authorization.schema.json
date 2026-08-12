@@ -15,6 +15,25 @@
     "valid_until": {"type": "string", "format": "date-time"},
     "max_calls": {"type": "integer", "minimum": 1},
     "approval_id": {"type": ["string", "null"]},
-    "notes": {"type": "string"}
+    "notes": {"type": "string"},
+    "evidence_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "tools", "actions", "resources", "sinks", "temporal", "cardinality"],
+      "properties": {
+        "subject": {"$ref": "#/$defs/basis"},
+        "tools": {"$ref": "#/$defs/basis"},
+        "actions": {"$ref": "#/$defs/basis"},
+        "resources": {"$ref": "#/$defs/basis"},
+        "sinks": {"$ref": "#/$defs/basis"},
+        "temporal": {"$ref": "#/$defs/basis"},
+        "cardinality": {"$ref": "#/$defs/basis"}
+      }
+    }
+  },
+  "$defs": {
+    "basis": {
+      "enum": ["task_explicit", "task_implied", "policy_defaulted"]
+    }
   }
 }

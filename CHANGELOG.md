@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-12 - Authorization reconstruction gate
+
+- Added task-only, two-reviewer authorization reconstruction with adjudication.
+- Added deterministic normalization for all 54 Chaitin candidate calls.
+- Blocked external risk annotation until task hashes and reconstructed authorization are frozen.
+- Removed source labels from external risk-annotation contexts.
+
 ## 0.1.0-dev - 2026-08-12
 
 - 建立研究目标、路线图、数据卡、标注手册与复现规范。

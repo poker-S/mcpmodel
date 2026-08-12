@@ -16,6 +16,8 @@ SCHEMA_FILES = {
     "audit_event": "audit_event.schema.json",
     "source_record": "source_record.schema.json",
     "derived_record": "derived_record.schema.json",
+    "authorization_draft": "authorization_draft.schema.json",
+    "reconstructed_authorization": "reconstructed_authorization.schema.json",
 }
 
 

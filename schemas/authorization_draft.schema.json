@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpmodel.local/schemas/authorization_draft.schema.json",
+  "title": "MCPModel task-only authorization reconstruction draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "draft_id",
+    "scenario_group",
+    "case_ids",
+    "task_evidence",
+    "candidate_count",
+    "machine_proposal",
+    "proposal_basis",
+    "provenance",
+    "review_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "draft_id": {"type": "string", "pattern": "^authdraft_[a-f0-9]{16}$"},
+    "scenario_group": {"type": "string", "minLength": 3},
+    "case_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "task_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["user_task", "sha256"],
+      "properties": {
+        "user_task": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "candidate_count": {"type": "integer", "minimum": 1},
+    "machine_proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "tools",
+        "actions",
+        "resources",
+        "sinks",
+        "valid_from",
+        "valid_until",
+        "max_calls"
+      ],
+      "properties": {
+        "subject": {"type": "string", "minLength": 1},
+        "tools": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "actions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "resources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "sinks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "valid_from": {"type": ["string", "null"], "format": "date-time"},
+        "valid_until": {"type": ["string", "null"], "format": "date-time"},
+        "max_calls": {"type": ["integer", "null"], "minimum": 1}
+      }
+    },
+    "proposal_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "tools",
+        "actions",
+        "resources",
+        "sinks",
+        "temporal",
+        "cardinality"
+      ],
+      "properties": {
+        "subject": {"$ref": "#/$defs/basis"},
+        "tools": {"$ref": "#/$defs/basis"},
+        "actions": {"$ref": "#/$defs/basis"},
+        "resources": {"$ref": "#/$defs/basis"},
+        "sinks": {"$ref": "#/$defs/basis"},
+        "temporal": {"$ref": "#/$defs/basis"},
+        "cardinality": {"$ref": "#/$defs/basis"}
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "source_file", "source_file_sha256"],
+        "properties": {
+          "source_id": {"type": "string", "minLength": 1},
+          "source_file": {"type": "string", "minLength": 1},
+          "source_file_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "review_status": {"const": "pending_independent_human_review"}
+  },
+  "$defs": {
+    "basis": {
+      "enum": ["task_explicit", "task_implied", "not_evidenced"]
+    }
+  }
+}

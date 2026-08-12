@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpmodel.local/schemas/reconstructed_authorization.schema.json",
+  "title": "MCPModel independently reviewed reconstructed authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authorization_id",
+    "scenario_group",
+    "case_ids",
+    "task_sha256",
+    "authorization",
+    "review"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "authorization_id": {"type": "string", "pattern": "^auth_[a-f0-9]{16}$"},
+    "scenario_group": {"type": "string", "minLength": 3},
+    "case_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "task_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "authorization": {"$ref": "authorization.schema.json"},
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewer_ids", "resolution", "task_evidence_quotes", "machine_proposal_not_authoritative"],
+      "properties": {
+        "reviewer_ids": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "resolution": {"enum": ["agreement", "adjudicated"]},
+        "adjudicator": {"type": ["string", "null"]},
+        "resolution_reason": {"type": "string"},
+        "task_evidence_quotes": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "machine_proposal_not_authoritative": {"const": true}
+      }
+    }
+  }
+}

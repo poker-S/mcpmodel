@@ -7,10 +7,18 @@ tool_aliases:
   terminal: shell
   bash: shell
   powershell: shell
+  exec: shell
+  process: shell
   git: git
   http: http
   fetch: http
+  web_fetch: http
+  web_search: http
+  browser: http
   api: http
+  read: filesystem
+  write: filesystem
+  memory_search: memory
 action_aliases:
   cat: read
   get: read
@@ -25,5 +33,6 @@ known_tool_families:
   - shell
   - git
   - http
+  - memory
   - secrets
   - ci_deployment
