@@ -1,0 +1,21 @@
+{
+  "dataset_version": "pilot-0.1",
+  "label_status": "scenario_design_not_human_adjudicated",
+  "case_count": 30,
+  "scenario_group_count": 15,
+  "risk_distribution": {
+    "L0": 3,
+    "L1": 6,
+    "L2": 8,
+    "L3": 10,
+    "L4": 3
+  },
+  "action_distribution": {
+    "allow": 12,
+    "approve": 10,
+    "deny": 3,
+    "isolate": 2,
+    "rewrite": 3
+  },
+  "canonical_sha256": "381a03cfdcfd65c5194f358193f1f5c3a4db1b8eb82f68ae50366e026f3489c5"
+}

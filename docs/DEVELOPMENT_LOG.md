@@ -62,3 +62,33 @@
 - 生成 30 条 Pilot；
 - 三人独立试标并计算 Fleiss' Kappa；
 - 实现 normalizer、authorization gap 和第一组 Rule/ACL 基线。
+
+## 2026-08-12 — P1 合成试标与基线流水线
+
+### 目标
+
+- 将 30 条/15 组反事实样本变成可复现数据产物；
+- 证明分组切分不会泄漏；
+- 跑通硬规则与成本敏感 Multinomial Logistic；
+- 明确区分“工程验收标签”和“独立人工真值”。
+
+### 已执行
+
+1. Schema 增加 `calls_used` 与 `actual_subject`，授权偏差补齐 `subject_gap`。
+2. 补充资源标签、调用参数特征和声明式硬规则引擎。
+3. 确定性生成 `pilot-0.1`：30 条、15 个场景组，L0～L4 均有覆盖。
+4. 固定种子 `20260812`，按组切分为 18/6/6，场景组无跨集合泄漏。
+5. 实现并跑通规则与成本敏感多项逻辑回归基线。
+6. 新增 ADR-0003，禁止把 synthetic smoke-test 指标当作论文证据。
+
+### 本地验证
+
+- Pilot canonical SHA-256：`381a03cfdcfd65c5194f358193f1f5c3a4db1b8eb82f68ae50366e026f3489c5`；
+- split assignment SHA-256：`f88fac8f3e728b3adef3a79cc808099966888b720dde3fe6bf464456118be59e`；
+- 32 个 JSON/JSONL 文档通过 Schema；
+- `ruff` 通过；`pytest` 12/12 通过；
+- 首次 Logistic 运行暴露 scikit-learn 1.9 不再允许 `liblinear` 直接多分类，改用 `lbfgs` 后恢复。
+
+### 当前结论
+
+流水线已经闭环，但 30 条设计标签过少且不是独立真值。测试划分上 Logistic 严重风险召回为 0，恰好说明此结果只能用作失败可见的 smoke test，下一步必须先进行三人盲标，而不是围绕这 6 条测试样本调参。

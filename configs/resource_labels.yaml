@@ -4,7 +4,7 @@ defaults:
   integrity: 0.3
   availability: 0.3
 patterns:
-  - pattern: "**/README*"
+  - pattern: "workspace:/**/README*"
     tag: public_document
     confidentiality: 0.0
     integrity: 0.2
@@ -19,12 +19,22 @@ patterns:
     confidentiality: 1.0
     integrity: 1.0
     availability: 0.5
+  - pattern: "workspace:/logs/**"
+    tag: sensitive_log
+    confidentiality: 0.8
+    integrity: 0.3
+    availability: 0.2
+  - pattern: "workspace:/tmp/**"
+    tag: temporary
+    confidentiality: 0.2
+    integrity: 0.2
+    availability: 0.1
   - pattern: "git:refs/heads/main"
     tag: protected_branch
     confidentiality: 0.2
     integrity: 1.0
     availability: 0.8
-  - pattern: "workspace:/"
+  - pattern: "workspace:/**"
     tag: workspace_root
     confidentiality: 0.7
     integrity: 1.0

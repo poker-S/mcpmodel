@@ -26,6 +26,15 @@ mcpmodel-validate data/examples
 pytest
 ```
 
+生成 P1 合成试标集并跑通基线流水线：
+
+```bash
+python scripts/generate_pilot.py
+python scripts/run_baselines.py --output results/p1-smoke
+```
+
+这里的 synthetic 标签只用于工程联调，不是独立人工真值，输出指标不能作为论文结论。
+
 低配置服务器建议限制线程：
 
 ```bash

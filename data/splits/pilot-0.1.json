@@ -1,0 +1,76 @@
+{
+  "seed": 20260812,
+  "strategy": "greedy_group_60_20_20",
+  "assignment_sha256": "f88fac8f3e728b3adef3a79cc808099966888b720dde3fe6bf464456118be59e",
+  "splits": {
+    "train": {
+      "case_count": 18,
+      "group_count": 9,
+      "risk_distribution": {
+        "L0": 1,
+        "L1": 4,
+        "L2": 6,
+        "L3": 6,
+        "L4": 1
+      },
+      "case_ids": [
+        "pilot_001",
+        "pilot_002",
+        "pilot_003",
+        "pilot_004",
+        "pilot_007",
+        "pilot_008",
+        "pilot_009",
+        "pilot_010",
+        "pilot_011",
+        "pilot_012",
+        "pilot_013",
+        "pilot_014",
+        "pilot_017",
+        "pilot_018",
+        "pilot_025",
+        "pilot_026",
+        "pilot_027",
+        "pilot_028"
+      ]
+    },
+    "validation": {
+      "case_count": 6,
+      "group_count": 3,
+      "risk_distribution": {
+        "L0": 1,
+        "L1": 1,
+        "L2": 1,
+        "L3": 2,
+        "L4": 1
+      },
+      "case_ids": [
+        "pilot_005",
+        "pilot_006",
+        "pilot_021",
+        "pilot_022",
+        "pilot_029",
+        "pilot_030"
+      ]
+    },
+    "test": {
+      "case_count": 6,
+      "group_count": 3,
+      "risk_distribution": {
+        "L0": 1,
+        "L1": 1,
+        "L2": 1,
+        "L3": 2,
+        "L4": 1
+      },
+      "case_ids": [
+        "pilot_015",
+        "pilot_016",
+        "pilot_019",
+        "pilot_020",
+        "pilot_023",
+        "pilot_024"
+      ]
+    }
+  }
+}

@@ -15,4 +15,3 @@ def test_feature_extraction_is_auditable() -> None:
     assert features["resource_tag"] == "protected_branch"
     assert features["integrity"] == 1.0
     assert features["tool_gap"] == 0.0
-

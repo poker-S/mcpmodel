@@ -16,6 +16,7 @@ class AuthorizationGap:
     sink_gap: float
     temporal_gap: float
     cardinality_gap: float
+    subject_gap: float
 
     def as_features(self) -> dict[str, float]:
         return asdict(self)
@@ -41,6 +42,7 @@ def compute_authorization_gap(
     normalized_tool: str | None = None,
     normalized_action: str | None = None,
     calls_used: int = 0,
+    actual_subject: str | None = None,
 ) -> AuthorizationGap:
     """Return six explicit binary gap features; 1.0 means outside authorization."""
     tool = normalized_tool or str(call["tool"]).lower()
@@ -64,4 +66,7 @@ def compute_authorization_gap(
         sink_gap=float(not _matches(None if sink is None else str(sink), authorization["sinks"])),
         temporal_gap=temporal_gap,
         cardinality_gap=float(calls_used + 1 > int(authorization["max_calls"])),
+        subject_gap=float(
+            actual_subject is not None and actual_subject != str(authorization["subject"])
+        ),
     )

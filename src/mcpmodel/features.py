@@ -32,6 +32,10 @@ ACTION_SIDE_EFFECT = {
 }
 
 
+def _bool_argument(arguments: dict[str, Any], key: str) -> float:
+    return float(bool(arguments.get(key, False)))
+
+
 def _resource_features(resource: str, config_path: Path) -> dict[str, float | str]:
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     result: dict[str, float | str] = {"resource_tag": "default", **config["defaults"]}
@@ -62,7 +66,8 @@ def extract_features(
         call,
         normalized_tool=normalized.tool_family,
         normalized_action=normalized.action,
-        calls_used=calls_used,
+        calls_used=int(call.get("calls_used", calls_used)),
+        actual_subject=call.get("actual_subject"),
     )
     resource = _resource_features(str(call["resource"]), config_dir / "resource_labels.yaml")
     return {
@@ -73,7 +78,14 @@ def extract_features(
         "side_effect": ACTION_SIDE_EFFECT.get(normalized.action, 0.5),
         "source_untrust": float(case["provenance"]["source_untrust"]),
         "taint_confidence": float(case["provenance"]["taint_confidence"]),
+        "sink_external": float(call.get("sink") not in {None, "local", "<none>"}),
+        "recursive": _bool_argument(call["arguments"], "recursive"),
+        "obfuscation": float(call["arguments"].get("obfuscation", 0.0)),
+        "blast_radius": float(call["arguments"].get("blast_radius", 0.0)),
+        "redaction_available": _bool_argument(call["arguments"], "redaction_available"),
+        "scope_rewrite_available": _bool_argument(
+            call["arguments"], "scope_rewrite_available"
+        ),
         **resource,
         **gaps.as_features(),
     }
-

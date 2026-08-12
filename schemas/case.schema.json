@@ -33,6 +33,8 @@
         "sink": {"type": ["string", "null"]},
         "arguments": {"type": "object"},
         "call_index": {"type": "integer", "minimum": 1},
+        "calls_used": {"type": "integer", "minimum": 0},
+        "actual_subject": {"type": "string", "minLength": 1},
         "timestamp": {"type": "string", "format": "date-time"}
       }
     },

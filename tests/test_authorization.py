@@ -36,4 +36,3 @@ def test_late_and_excess_call_has_two_gaps() -> None:
     )
     assert gap.temporal_gap == 1.0
     assert gap.cardinality_gap == 1.0
-

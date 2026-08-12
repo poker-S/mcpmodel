@@ -17,4 +17,3 @@ def test_unknowns_are_not_silently_coerced() -> None:
     normalizer = ToolNormalizer(ROOT / "configs" / "tool_normalization.yaml")
     normalized = normalizer.normalize("mystery_tool", "teleport")
     assert normalized.status == "unknown"
-
