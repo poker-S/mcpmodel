@@ -121,3 +121,21 @@ def test_finalize_blocks_disagreement_without_adjudication(tmp_path) -> None:
     _fill_reviews(pack, mismatch=True)
     with pytest.raises(ValueError, match="requires completed adjudication"):
         finalize_authorization_reviews(pack, tmp_path / "authorizations.jsonl", SCHEMAS)
+
+
+def test_finalize_rejects_reversed_time_window(tmp_path) -> None:
+    records = [_record("case_001", 1, "web_fetch", {"url": "https://example.test/status"})]
+    pack = tmp_path / "pack"
+    create_authorization_reconstruction_pack(records, pack, ToolNormalizer(CONFIG))
+    _fill_reviews(pack)
+    for reviewer in ("A", "B"):
+        path = pack / f"authorization-review-{reviewer}.csv"
+        with path.open(encoding="utf-8-sig", newline="") as handle:
+            row = next(csv.DictReader(handle))
+        row["valid_until"] = "2026-08-11T00:00:00Z"
+        with path.open("w", encoding="utf-8-sig", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=REVIEW_FIELDS)
+            writer.writeheader()
+            writer.writerow(row)
+    with pytest.raises(ValueError, match="later than valid_from"):
+        finalize_authorization_reviews(pack, tmp_path / "authorizations.jsonl", SCHEMAS)

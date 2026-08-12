@@ -8,6 +8,7 @@ import json
 import re
 from collections import defaultdict
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -345,14 +346,26 @@ def _review_authorization(row: dict[str, str]) -> dict[str, Any]:
     }
     if set(basis.values()) - BASIS_VALUES:
         raise ValueError("all evidence basis fields must use the documented vocabulary")
+    valid_from = row["valid_from"]
+    valid_until = row["valid_until"]
+    try:
+        start = datetime.fromisoformat(valid_from.replace("Z", "+00:00"))
+        end = datetime.fromisoformat(valid_until.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError("valid_from and valid_until must be RFC 3339 date-time values") from exc
+    if start.tzinfo is None or end.tzinfo is None or end <= start:
+        raise ValueError("valid_until must be later than valid_from and both need time zones")
+    subject = row["subject"].strip()
+    if not subject:
+        raise ValueError("subject must be non-empty")
     return {
-        "subject": row["subject"],
+        "subject": subject,
         "tools": _parse_array(row["tools_json"], "tools_json"),
         "actions": _parse_array(row["actions_json"], "actions_json"),
         "resources": _parse_array(row["resources_json"], "resources_json"),
         "sinks": _parse_array(row["sinks_json"], "sinks_json"),
-        "valid_from": row["valid_from"],
-        "valid_until": row["valid_until"],
+        "valid_from": valid_from,
+        "valid_until": valid_until,
         "max_calls": int(row["max_calls"]),
         "evidence_basis": basis,
     }
